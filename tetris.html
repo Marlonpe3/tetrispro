@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tetris</title>
+    <link rel="stylesheet" href="tetris.css">
+    <link rel="stylesheet" href="controles.css">
+
+    <!--haaa haber si funciona-->
+
+</head>
+<body>
+ <!--solo puebra-->
+<video class="video-background" autoplay muted loop>
+    <source src="video/tetra.mp4" type="video/mp4">
+    <source src="" type="video/tetra.mp4">
+</video>
+ <!--vamos-->
+
+
+
+    <div id="centerbox">
+<TABLE cellspacing="0" cellpadding="0" width="100%" height="68%"><TBODY><TR><TD valign="middle">
+
+    <DIV id="tetris">
+        <DIV class="left">
+            <H1>Tetris Game</H1>
+            <DIV class="menu">
+                <DIV><INPUT type="button" value="New Game" id="tetris-menu-start"></DIV>
+                <DIV><INPUT type="button" value="Reset" id="tetris-menu-reset"></DIV>
+                <DIV><INPUT type="button" value="Help" id="tetris-menu-help"></DIV>
+                <DIV><INPUT type="button" value="Highscores" id="tetris-menu-highscores"></DIV>
+            </DIV>
+            <DIV class="keyboard">
+                <DIV class="up"><INPUT type="button" value="^" id="tetris-keyboard-up"></DIV>
+                <DIV class="down"><INPUT type="button" value="v" id="tetris-keyboard-down"></DIV>
+                <DIV class="left"><INPUT type="button" value="&lt;" id="tetris-keyboard-left"></DIV>
+                <DIV class="right"><INPUT type="button" value="&gt;" id="tetris-keyboard-right"></DIV>
+            </DIV>
+            <DIV id="tetris-nextpuzzle" style="display: none; "></DIV>
+            <DIV id="tetris-gameover" style="display: none; ">Fin del juego</DIV>
+            <DIV class="stats">
+                <TABLE cellspacing="0" cellpadding="0">
+                <TBODY><TR>
+                    <TD class="level">Nivel:</TD>
+                    <TD><SPAN id="tetris-stats-level">1</SPAN></TD>
+                </TR>
+                <TR>
+                    <TD class="score">Puntos:</TD>
+                    <TD><SPAN id="tetris-stats-score">0</SPAN></TD>
+                </TR>
+                <TR>
+                    <TD class="lines">Lines:</TD>
+                    <TD><SPAN id="tetris-stats-lines">0</SPAN></TD>
+                </TR>
+                <TR>
+                    <TD class="apm">APM:</TD>
+                    <TD><SPAN id="tetris-stats-apm">0</SPAN></TD>
+                </TR>
+                <TR>
+                    <TD class="time">Tiempo:</TD>
+                    <TD><SPAN id="tetris-stats-time">0</SPAN></TD>
+                </TR>
+                
+                </TBODY></TABLE>
+            </DIV>
+        </DIV>
+        <DIV id="tetris-area"></DIV>
+        <DIV id="tetris-help" class="window" style="display: none; ">
+            <DIV class="top">
+                Ayuda <SPAN id="tetris-help-close" class="close">x</SPAN>
+            </DIV>
+            <DIV class="content">
+                <B>Controles:</B> <BR>
+                up - rotate <BR>
+                down - move down <BR>
+                left - move left <BR>
+                right - move right <BR>
+                space - fall to the bottom <BR>
+                n - new game <BR>
+                r - reset <BR>
+                <BR>
+                <B>Rules:</B> <BR>
+                1) Velocidad del rompecabezas = 80 + 700/milisegundos de nivel, cuanto menor sea el valor, más rápido caerá el rompecabezas. <BR>
+                2) Si los rompecabezas creados en el nivel actual &gt;= 10 + nivel * 2, entonces aumenta el nivel <BR>
+                3) Después de caer en el rompecabezas, la puntuación aumenta en 1000*nivel*líneasEliminado <BR>
+                4) Cada acción "abajo" aumenta la puntuación en 5+nivel (presionar espacio cuenta como múltiples acciones abajo)
+            </DIV>
+        </DIV>
+        <DIV id="tetris-highscores" class="window" style="display: none; ">
+            <DIV class="top">
+                Highscores <SPAN id="tetris-highscores-close" class="close">x</SPAN>
+            </DIV>
+            <DIV class="content">
+                <DIV id="tetris-highscores-content"></DIV>
+                <BR>
+                Nota: estas puntuaciones se guardan en cookies, sólo son visibles para tu computadora, otros jugadores que visitan esta página ven sus propias puntuaciones.
+            </DIV>
+        </DIV>
+    </DIV>  
+    </TD></TR></TBODY></TABLE>
+</div>
+
+<div class="controls-container">
+    <div class="controls-title">Controles Visuales</div>
+    
+    <div class="arrow-controls">
+        <button class="arrow-btn arrow-up" data-direction="up">↑</button>
+        <button class="arrow-btn arrow-left" data-direction="left">←</button>
+        <button class="arrow-btn arrow-down" data-direction="down">↓</button>
+        <button class="arrow-btn arrow-right" data-direction="right">→</button>
+    </div>
+
+    <div class="controls-info">
+        <div><strong>↑</strong> Rotar pieza</div>
+        <div><strong>←</strong> Mover izquierda</div>
+        <div><strong>→</strong> Mover derecha</div>
+        <div><strong>↓</strong> Caída rápida</div>
+    </div>
+</div>
+<!--esto vamos a haber si funciona haa intento 2-->
+       
+    <div class="floating-menu-wrapper">
+        <!-- Botón principal -->
+        <button class="floating-menu-btn" id="floatingMenuBtn">⚙️</button>
+        
+        <!-- Panel del menú -->
+        <div class="floating-menu-panel" id="floatingMenuPanel">
+            <div class="floating-menu-title">🎮 Configuración</div>
+            
+            <!-- Sección de Música -->
+            <div class="floating-menu-section">
+                <div class="floating-menu-section-title">🎵 Música</div>
+                
+                <button class="floating-menu-action-btn music" id="floatingPlayBtn">
+                    <span id="floatingPlayIcon">▶️</span>
+                    <span id="floatingPlayText">Reproducir</span>
+                </button>
+                
+                <div class="floating-volume-controls">
+                    <button class="floating-volume-btn" id="floatingVolumeDown">🔉</button>
+                    <input type="range" class="floating-volume-slider" id="floatingVolumeSlider" 
+                           min="0" max="100" value="50">
+                    <button class="floating-volume-btn" id="floatingVolumeUp">🔊</button>
+                    <span class="floating-volume-display" id="floatingVolumeDisplay">50%</span>
+                </div>
+            </div>
+            
+            <!-- Sección de Tema -->
+            <div class="floating-menu-section">
+                <div class="floating-menu-section-title">🌙 Apariencia</div>
+                
+                <div class="floating-theme-toggle">
+                    <span class="floating-theme-label">Modo Oscuro</span>
+                    <label class="floating-switch">
+                        <input type="checkbox" id="floatingDarkMode">
+                        <span class="floating-switch-slider"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Audio para música -->
+    <audio  src="music/Alan.mp3" id="floatingBackgroundMusic" loop>
+        
+    </audio>
+
+    <!-- JAVASCRIPT DEL MENÚ FLOTANTE - AISLADO Y SEGURO -->
+
+<script src="tetris.js"></script>
+</body>
+</html>             
+
+
